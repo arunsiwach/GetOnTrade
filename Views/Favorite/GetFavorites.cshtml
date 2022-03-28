@@ -1,0 +1,54 @@
+﻿@model IEnumerable<GetOnTrades.Models.FavoriteModel>
+@{
+    ViewBag.Title = "Favorites Page";
+
+}
+<script>
+
+    function handleFavorites(stockSymbol) {
+        var favorite = new Object();
+        favorite.symbol = stockSymbol;
+        //alert(stockSymbol);
+        fetch('/RemoveFavorite', {
+            method: "POST",
+            body: JSON.stringify(favorite),
+            headers: {
+                "Content-type": "application/json; charset=UTF-8"
+            }
+        })
+    }
+</script>
+<div class="table-responsive">
+    <table class="table table-bordered table-condensed table-striped table-hover sortable">
+        @if (Model.Count() == 0)
+        {
+            <tr>
+                <td colspan="10">No Record's found.</td>
+            </tr>
+
+        }
+        else
+        {
+            <thead>
+                <tr class="danger">
+                    <th data-defaultsign="_19"> Symbol</th>
+                    <th data-defaultsign="AZ">Price</th>
+                    <th data-defaultsign="AZ">News</th>
+                    <th data-defaultsign="AZ">Date</th>
+                    <th data-defaultsign="AZ"></th>
+                </tr>
+            </thead>
+
+            foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.symbol</td>
+                    <td>@item.marketPrice</td>
+                    <td>@item.newsLink</td>
+                    <td>@item.favoriteDate</td>        
+                    <td><a href='javascript:void(null)' onclick='handleFavorites("@item.symbol");'>Remove Favorite </a> </td>
+                </tr>
+            }
+        }
+    </table>
+</div> 

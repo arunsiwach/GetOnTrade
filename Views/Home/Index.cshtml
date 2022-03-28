@@ -1,0 +1,203 @@
+﻿@{
+    ViewData["Title"] = "New Layout Page";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+
+}
+
+@section crunch_munch {
+    <script type="text/javascript" >
+           $(window).on('load', function() 
+           { 
+               $('input:radio[name="recom"]').change(function(){
+
+                   alert($(this).val())
+                   $.get("/Home/Index/",{key:'search',value:$(this).val()}, function (data) {  
+                       
+                    });                                                             
+                    
+                });                                 
+           });                                        
+</script>    
+}
+
+
+@model IEnumerable<GetOnTrades.Models.HomeModel>
+@{
+    ViewBag.Title = "Index Page";
+
+}
+
+
+
+@*<div class="text-center">*@
+
+<div class="content">
+
+    <div class="container">
+                <div class="row">
+
+                
+                <div style="border-radius:2px;border: 2px solid #FFFFFF;padding: 20px;width: auto;height:auto;" >        
+                     @*asp-controller="Home" asp-action="FilterMessage" *@
+                    @*<span><input checked="checked" type="radio" name="recom" value="all News"  /> Today</span>*@
+                    <span><input checked="checked" type="radio" name="recom" value="FORD" /> FORD </span>
+                    &nbsp;
+                    &nbsp;
+                    &nbsp;
+                    &nbsp;
+                    @*<span><input type="radio" name="recom" value="Recomended"  /> Today/Yesterday</span>*@
+                    <span><input type="radio" name="recom" value="NIO" />NIO</span>
+                    &nbsp;
+                    &nbsp;
+                    &nbsp;
+                    &nbsp;
+                    <span><input type="radio" name="recom" value="Tweeted" /> All</span>
+                </div>
+                </div>
+                <div></div>                
+        <div class="row">
+            @if (Model.Count() == 0)
+            {
+                <div align="center">
+                    <p>No Record's found.</p>
+                </div>
+            }
+            else
+            {
+                <div class="col-lg-7">                                     
+                                                       
+                    @*foreach (var item in Model.Where(s => s.Symbol.Contains("FORD")))*@
+
+                    @foreach (var item in Model)
+                    {
+                        
+                        <div class="card card-primary card-outline">
+                            <div class="card-body">
+                                <h5 class="card-title"><b>@item.Symbol - @item.CompanyName</b></h5> <br />
+                                <p>
+                                    <span>
+                                        Market Price -
+                                        <b>@item.MarketPrice</b>
+                                    </span>
+                                    <span>
+                                        Change -
+                                        <b>@item.PercentChange</b>
+                                    </span>
+                                    <span>
+                                        Total Shares -
+                                        <b>@item.OutStandingShares</b>
+                                    </span>
+                                    <span>
+                                        Volume -
+                                        <b>@item.AverageVolume</b>
+                                    </span>
+                                    <span>
+                                        Market Cap -
+                                        <b>@item.MarketCap</b>
+                                    </span>
+                                </p>
+                                <p>
+                                    @foreach (var items in item.AllNews)
+                                    {
+                                        <h6 class="card-text">
+                                            <a href='@items.NewsLink'>
+                                                @items.Title
+                                            </a> -
+                                            <a href='@items.NewsSourceLink' class="card-link">Source</a>
+                                        </h6>
+                                    }
+                                </p>
+                                <p>
+                                    All Tweets
+                                    @foreach (var items in item.AllTweets)
+                                    {
+                                        <h6 class="card-text">@items.Title</h6>
+                                    }
+                                </p>
+                            </div>
+                        </div>
+
+                    }
+                    <!--<div class="card card-primary card-outline">
+                        <div class="card-body">
+                            <h5 class="card-title">Card title</h5>
+                            <p>
+
+                                Some quick example text to build on the card title and make up the bulk of the card's
+                                content.No2
+                            </p>
+                            <a href="#" class="card-link">Card link</a>
+                            <a href="#" class="card-link">Another link</a>
+                        </div>
+                    </div>-->
+                    <!-- /.card -->
+                    <!--<div class="card card-primary card-outline">
+                        <div class="card-body">
+                            <h5 class="card-title">Card title</h5>
+
+                            <p class="card-text">
+                                Some quick example text to build on the card title and make up the bulk of the card's
+                                content.no3
+                            </p>
+                            <a href="#" class="card-link">Card link</a>
+                            <a href="#" class="card-link">Another link</a>
+                        </div>
+                    </div>-->
+                    <!-- /.card -->
+
+
+
+
+                </div>
+                <!-- /.col-md-6 -->
+
+                <div class="col-lg-5">
+                    <div class="card card-purple">
+                        <div class="card-header">
+                            <h5 class="card-title m-0">All Tweets</h5>
+                        </div>
+                        <div class="card-body">
+                            <h6 class="card-title">Tweets Tittle</h6>
+
+                            <p class="card-text">Tweets Content will display here</p>
+                            <a href="#" class="btn btn-primary">Tweet link if any </a>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <!--<div class="card-header">
+                        </div>-->
+                        <div class="card-body">
+                            <div align="center">
+                                <img src="~/dist/img/Adverdisment1.png" style="max-width: 100%; height: auto;" />
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card card-purple">
+                        <div class="card-header">
+                            <h5 class="card-title m-0">All Tweets</h5>
+                        </div>
+                        <div class="card-body">
+                            <h6 class="card-title">Tweets Tittle</h6>
+
+                            <p class="card-text">Tweets Content will display here</p>
+                            <a href="#" class="btn btn-primary">Tweet link if any </a>
+                        </div>
+                    </div>
+
+
+                </div>
+            }
+        </div>
+        <!-- /.row -->
+
+
+    </div><!-- /.container-fluid -->
+</div>
+<!-- .Content -->
+   
+    
+   
+@*</div>*@

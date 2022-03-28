@@ -1,0 +1,133 @@
+[
+    {
+        "PercentChange": -8.73,
+        "WatchUri": "https://robinhood.com/stocks/NIO",
+        "PercentChangeSinceLast": -0.2,
+        "MarketPrice": 19.84,
+        "CompanyName": "NIO Inc",
+        "Symbol": "NIO",
+        "OutStandingShares": 1590015128.593041,
+        "AverageVolume": 56390000,
+        "AverageVolumeChangeSinceLast": 800000,
+        "MarketCap": 31530000000,
+        "AllNews": [
+            {
+                "Symbol": null,
+                "Title": "Nio The Trip to the Less Bountiful - InvestorPlace",
+                "NewsLink": "https://www.investorplace.com/2022/03/nio-stock-the-trip-to-less-bountiful/",
+                "NewsSourceLink": "https://news.google.com/search?q=NIO+Stock&hl=en-US&gl=US&ceid=US:en",
+                "PubDate": "3/2/2022 11:37:22 AM",
+                "IsTweeted": true
+            },
+            {
+                "Symbol": null,
+                "Title": "Nio stock opens lower on Thursday but Rivian backtracks on price hikes - FXStreet",
+                "NewsLink": "https://www.fxstreet.com/news/nio-stock-fails-to-bounce-in-line-with-most-equities-on-wednesday-202203031400",
+                "NewsSourceLink": "https://news.google.com/search?q=NIO+Stock&hl=en-US&gl=US&ceid=US:en",
+                "PubDate": "3/3/2022 7:30:00 AM",
+                "IsTweeted": true
+            },
+            {
+                "Symbol": null,
+                "Title": "Auto Giant Aims For Startup Speed With Move To Beat Tesla Nio - Investors Business Daily",
+                "NewsLink": "https://www.investors.com/news/ford-stock-pops-auto-giant-move-startup-speed-tesla-nio/",
+                "NewsSourceLink": "https://news.google.com/search?q=NIO+Stock&hl=en-US&gl=US&ceid=US:en",
+                "PubDate": "3/2/2022 1:12:00 PM",
+                "IsTweeted": true
+            },
+            {
+                "Symbol": "NIO",
+                "Title": "",
+                "NewsLink": "",
+                "NewsSourceLink": null,
+                "PubDate": null,
+                "IsTweeted": false
+            },
+            {
+                "Symbol": null,
+                "Title": "Nio Stock The China EV Startup Fords CEO Thinks Is The Competition To Beat - Investors Business Daily",
+                "NewsLink": "https://www.investors.com/videos/nio-stock-the-china-ev-startup-fords-ceo-thinks-is-the-competition-to-beat/",
+                "NewsSourceLink": "https://news.google.com/search?q=NIO+Stock&hl=en-US&gl=US&ceid=US:en",
+                "PubDate": "3/3/2022 8:14:30 AM",
+                "IsTweeted": true
+            },
+            {
+                "Symbol": null,
+                "Title": "Nio Reportedly Raises $163M Through Debt Offering In China What Investors Need To Know",
+                "NewsLink": "https://www.benzinga.com/markets/asia/22/03/25963979/nio-reportedly-raises-163m-through-debt-offering-in-china-what-investors-need-to-know",
+                "NewsSourceLink": "https://www.benzinga.com/stock/NIO",
+                "PubDate": "3/3/2022 9:00:05 AM",
+                "IsTweeted": true
+            },
+            {
+                "Symbol": null,
+                "Title": "Why Nio Stock Is Crashing Today - The Motley Fool",
+                "NewsLink": "https://www.fool.com/investing/2022/03/03/why-nio-stock-is-crashing-today/",
+                "NewsSourceLink": "https://news.google.com/search?q=NIO+Stock&hl=en-US&gl=US&ceid=US:en",
+                "PubDate": "3/3/2022 11:24:32 AM",
+                "IsTweeted": true
+            },
+            {
+                "Symbol": null,
+                "Title": "Why Nio Stock Is Crashing Today - Nasdaq",
+                "NewsLink": "https://www.nasdaq.com/articles/why-nio-stock-is-crashing-today",
+                "NewsSourceLink": "https://news.google.com/search?q=NIO+Stock&hl=en-US&gl=US&ceid=US:en",
+                "PubDate": "3/3/2022 11:24:32 AM",
+                "IsTweeted": true
+            }
+        ],
+        "AllTweets": [
+            {
+                "Title": "RT @jukimol UkraineRussiaWar affecting the StockMarket hard. Sticking with growth plays like ElectricVehicles. After how $NIO $TSLA an",
+                "User": "lojestik",
+                "TweetLink": null
+            },
+            {
+                "Title": "@StockMKTNewz $NIO but I bought in lowkept going lower",
+                "User": "JB",
+                "TweetLink": "https://twitter.com/statuses/1499469158819450886"
+            }
+        ]
+    },
+    {
+        "PercentChange": 16.14,
+        "WatchUri": "https://robinhood.com/stocks/BPTS",
+        "PercentChangeSinceLast": 16.14,
+        "MarketPrice": 5.9,
+        "CompanyName": "Ford Motors",
+        "Symbol": "FORD",
+        "OutStandingShares": 11279527.559055118,
+        "AverageVolume": 4250.0,
+        "AverageVolumeChangeSinceLast": 4250.0,
+        "MarketCap": 57300000.0,
+        "AllNews": [
+            {
+                "Symbol": "BPTS",
+                "Title": "Biophytissss To Restart Recruitment In US Centers For COVID19 Trial",
+                "NewsLink": "https://www.benzinga.com/general/biotech/21/11/24091848/biophytis-to-restart-recruitment-in-us-centers-for-covid-19-trial",
+                "NewsSourceLink": "https://www.benzinga.com/stock/BPTS",
+                "PubDate": null,
+                "IsTweeted": true
+            },
+            {
+                "Symbol": "BPTS",
+                "Title": "Biophytissss To Restart Recruitment In US Centers For COVID19 Trial",
+                "NewsLink": "https://www.benzinga.com/general/biotech/21/11/24091848/biophytis-to-restart-recruitment-in-us-centers-for-covid-19-trial",
+                "NewsSourceLink": "https://www.benzinga.com/stock/BPTS",
+                "PubDate": null,
+                "IsTweeted": true
+            }
+        ],
+
+        "AllTweets": [
+            {
+                "Symbol": "BPTS",
+                "Title": "Biophytissss To Restart Recruitment In US Centers For COVID19 Trial",
+                "NewsLink": "https://www.benzinga.com/general/biotech/21/11/24091848/biophytis-to-restart-recruitment-in-us-centers-for-covid-19-trial",
+                "NewsSourceLink": "https://www.benzinga.com/stock/BPTS",
+                "PubDate": null,
+                "IsTweeted": true
+            }
+        ]
+    }
+]

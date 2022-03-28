@@ -1,0 +1,26 @@
+[
+  {
+    "symbol": "FORD",
+    "favoriteDate": "01/27/2022",
+    "newsLink": null,
+    "marketPrice": 5.9
+  },
+  {
+    "symbol": "TSLA",
+    "favoriteDate": "01/27/2022",
+    "newsLink": null,
+    "marketPrice": 5.9
+  },
+  {
+    "symbol": "GTEC",
+    "favoriteDate": "01/27/2022",
+    "newsLink": null,
+    "marketPrice": 4.84
+  },
+  {
+    "symbol": "GTEC",
+    "favoriteDate": "01/27/2022",
+    "newsLink": null,
+    "marketPrice": 4.84
+  }
+]

@@ -1,0 +1,1704 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+@model IEnumerable<GetOnTrades.Models.ProcessedMessage>
+
+
+<head>
+    <title>JSON Basic</title>
+
+</head>
+
+
+<style>
+    /* unvisited link */
+    a:link {
+        color: black;
+    }
+
+    /* visited link */
+    a:visited {
+        color: green;
+    }
+
+    /* mouse over link */
+    a:hover {
+        color: hotpink;
+    }
+
+    /* selected link */
+    a:active {
+        color: blue;
+    }
+</style>
+
+<script>
+
+    // Avoid scoping issues by encapsulating code inside anonymous function
+    (function () {
+        // variable to store our current state
+        var cbstate;
+
+        // bind to the onload event
+        window.addEventListener('load', function () {
+            // Get the current state from localstorage
+            // State is stored as a JSON string
+            cbstate = JSON.parse(localStorage['CBState'] || '{}');
+
+            // Loop through state array and restore checked
+            // state for matching elements
+            for (var i in cbstate) {
+                var el = document.querySelector('input[name="' + i + '"]');
+                if (el) el.checked = true;
+            }
+
+            // Get all checkboxes that you want to monitor state for
+            var cb = document.getElementsByClassName('save-cb-state');
+
+            // Loop through results and ...
+            for (var i = 0; i < cb.length; i++) {
+
+                //bind click event handler
+                cb[i].addEventListener('click', function (evt) {
+                    // If checkboxe is checked then save to state
+                    if (this.checked) {
+                        cbstate[this.name] = true;
+                    }
+
+                    // Else remove from state
+                    else if (cbstate[this.name]) {
+                        delete cbstate[this.name];
+                    }
+
+                    // Persist state
+                    localStorage.CBState = JSON.stringify(cbstate);
+                });
+            }
+        });
+    })();
+</script>
+
+<body>
+    <p>Display JSON file on HTML pages:</p>
+    <p id="main"></p>
+    <input type="radio" name="recom" value="Recomended" />Recomended
+    <input checked="checked" type="radio" name="recom" value="all" />All
+    <br />
+    <input  type="radio" name="options" value="OptionsOnly" />OptionsOnly
+    <input checked="checked" type="radio" name="options" value="NoOptions" />NoOptions
+    <input type="radio" name="options" value="all" />All
+    <br />
+    <input type="radio" name="Bio" value="NoBio" />NoBio
+    <input checked="checked"  type="radio" name="Bio" value="all" />All
+    <br />
+
+    <input checked="checked" type="radio" name="platform" value="Webull" />Webull
+    <input type="radio" name="platform" value="TradingView" />TradingView
+    <input checked="checked"  type="radio" name="platform" value="all" />All
+
+    <br />
+    <input type="radio" name="colors" value="today" />Today
+    <input checked="checked" type="radio" name="colors" value="todayYesterday" />Today/Yesterday
+    <input type="radio" name="colors" value="all" />All
+
+
+    <br />
+    <input checked="checked" type="radio" name="float" value="all" />All
+    <input type="radio" name="float" value="float" />Lowfloat
+    <br />
+
+
+    <input checked="checked" type="radio" name="new" value="all" />All
+    <input type="radio" name="new" value="new" />NewAdded
+    <br />
+
+
+    <!--<input checked="checked" type="radio" name="tweet" value="all" />All
+    <input type="radio" name="tweet" value="tweet" />Tweeted
+    <br />-->
+
+    <input checked="checked" type="radio" name="time" value="all" />All
+    <input type="radio" name="time" value="hour" />Last1Hour
+    <input type="radio" name="time" value="tweet" />Tweeted
+    <br />
+    <input checked="checked" type="radio" name="percent" value="0Above" />All
+    <input type="radio" name="percent" value="0TO5" />0TO5
+    <input type="radio" name="percent" value="5TO10" />5TO10
+    <input type="radio" name="percent" value="10TO20" />10TO20
+    <input type="radio" name="percent" value="20TO40" />20TO40
+    <input type="radio" name="percent" value="40TO100" />40TO100
+    <input type="radio" name="percent" value="100Above" />100Above
+    <br />
+
+    <input checked="checked" type="radio" name="tradinghours" value="Trading" />Trading
+    <input type="radio" name="tradinghours" value="After" />After
+    <input type="radio" name="tradinghours" value="PreMarket" />PreMarket
+    <!--<input type="radio" name="tradinghours" value="Recent" />Recent
+    <input type="radio" name="tradinghours" value="Volume" />AverageVolume-->
+    <br />
+
+    <input checked="checked" type="radio" name="shortcut" value="All" />All
+    <input type="radio" name="shortcut" value="Recent" />Recent
+    <input type="radio" name="shortcut" value="Volume" />Volume
+    <br />
+
+    <input checked="checked" type="radio" name="price" value="0" />All
+    <input type="radio" name="price" value="1" />USD 1
+    <input type="radio" name="price" value="3" />USD 3
+    <input type="radio" name="price" value="5" />USD 5
+    <input type="radio" name="price" value="10" />USD 10
+    <input type="radio" name="price" value="20" />USD 20
+    <br />
+    <br />
+    <button onclick="News('All')">All</button>
+    <button onclick="News('News')">News</button>
+    <button onclick="News('Tweets')">Tweets</button>
+    <!--<button onclick="News('Today')">Today</button>-->
+    <!-- <button onclick="News('SeekingAlpha')">SeekingAlpha</button>-->
+    <!--<button onclick="News('TodayAfter')">TodayAfterHours</button>
+    <button onclick="News('TodayIn')">TodayTradingHours</button>
+    <button onclick="News('TodayPre')">TodayPreMarket</button>-->
+    <!--<button onclick="News('After')">AfterHours</button>
+    <button onclick="News('In')">TradingHours</button>
+    <button onclick="News('Pre')">PreMarket</button>-->
+    <!--<button onclick="News('Upward')">Upward</button>
+    <button onclick="News('FivePercentFilter')">5% Up News</button>
+    <button onclick="News('Imp')">Imp</button>-->
+    <button onclick="News('RecentChange')">RecentChange</button>
+    <button onclick="News('VolumeChange')">VolumeChange</button>
+    <button onclick="News('GreatValue')">GreatValue</button>
+    <button onclick="News('FilterNews')">FilterNews</button>
+    <button onclick="News('FilterGreatValueNews')">FilterGreatValueNews</button>
+    <button onclick="News('FilterFairValueNews')">FilterFairValueNews</button>
+    <button onclick="News('RecentTop3Ever')">RecentTop3Ever</button>
+
+    <!--<button onclick="News('IPONews')">IPONews</button>
+    <button onclick="News('SPACNews')">SPAC News</button>
+    <button onclick="News('WSB')">WallStreetBets</button>
+    <button onclick="News('HTI')">HotIndustry</button>-->
+    <!--<button onclick="News('LOH')">LastOneHour</button>-->
+    <!--<button onclick="News('P01')">Price Under 1</button>
+    <button onclick="News('P03')">Price Under 3</button>
+    <button onclick="News('P05')">Price Under 5</button>
+    <button onclick="News('P10')">Price Under 10</button>-->
+
+    <p id="demo"></p>
+
+    <script>
+             // debugger;
+             // const api_url =
+             //     "https://getontrades.azurewebsites.net/File";
+
+             // // Defining async function
+             //async function getapi(url) {
+
+             //     // Storing response
+             //     const response = await fetch(url);
+             //     debugger;
+             //     // Storing data in form of JSON
+             //     data = await response.json();
+             //     //console.log(data);
+             //     if (response) {
+
+             //         //data = "data = '" + data.replace("'", "") + "';";
+             //         var people = JSON.parse(data);
+             //         //var blob = new Blob([data], { type: "text/plain;charset=utf-8" });
+             //         //FileSaver.saveAs(blob, "C:\BlobData\NewzData.json");
+             //     }
+
+
+
+
+             //     //show(data);
+             // }
+             // // Calling that async function
+
+
+
+             // getapi(api_url);
+
+        @* </script>
+            <script type="text/javascript" src="C:\\blobdata\\Newzdata.json"></script>
+            <script>*@
+
+
+
+             /**
+              * display content using a basic HTML replacement
+              */
+             function displayContents(txt) {
+                 //alert(txt);
+                 var el = document.getElementById('main');
+                 el.innerHTML = txt; //display output in DOM
+             }
+
+             //readText("\\10.0.0.93\\BlobData\\AllServiceRunTime.txt");
+             //readText("\\10.0.0.93\\BlobData\\AllServiceRunTime.txt");
+
+    </script>
+
+    <script>
+                        //alert(data);
+                        var showTweets = true;
+                        var showNews = true;
+                        var i;
+                        var selectedRecomended = false;
+                var selectedBio = false;
+                var selectedOptionsOnly = false;
+                var selectedNoOptions = false;
+                        var selectedTimeHour = false;
+                        var selectedTweeted = false;
+                        var selectedNew = false;
+                        var selectedLowFloat = false;
+                        var selectedPrice = 0;
+                        var selectedToday = false;
+                        var selectedTodayYesterday = false;
+                        var minPercent = 0;
+                        var maxPercent = 100000;
+                        var selectedTradinghours = 'Trading';
+                        var selectedShortCut = 'All';
+                        var selectedPlatform = 'Webull';
+                        var today = new Date();
+                        var peopleinfo = "";
+                        var datepercentFlip = true;
+                        var dateFlip = true;
+                        var impFlip = false;
+                        var changeFlip = true;
+                        var percentFlip = false;
+                        var webdata;
+                        var GreatValuePercent = 25;
+                        var FairValuePercent = 25;
+                        var RiskValuePercent = 60;
+
+
+                       debugger;
+                        var data='@Json.Serialize(@Model)';
+                        // api url
+                        //var data='@ViewBag.Messages';
+                        var people = "";//JSON.parse(data);
+
+
+
+
+                        ////alert(people);
+                        //try {
+                        //    debugger;
+                        //    //alert(data);
+                        //    var xhr = new XMLHttpRequest();
+                        //    xhr.onreadystatechange = function () {
+                        //        if (xhr.readyState == XMLHttpRequest.DONE) {
+                        //            debugger;
+                        //            data = xhr.response.JSON;
+                        //            alert(data);
+                        //            //webdata = "data = '" + webdata.replace("'", "") + "';";
+                        //            //people = JSON.parse(webdata);
+                        //            News("default");
+                        //        }
+                        //    }
+                        //    xhr.open('GET', 'https://getontrades.azurewebsites.net/File', true);
+                        //    xhr.send(null);
+                        //    debugger;
+
+                        //    alert(data);
+
+                        //} catch (e) {
+                        //    // statements to handle any exceptions
+                        //    alert(e); // pass exception object to error handler
+                        //}
+                        //alert(data);
+                        ////Populate();
+                        ////document.getElementById("demo").innerHTML = peopleinfo;
+
+                        try {
+
+                            News("default");
+
+                        } catch (e) {
+                            // statements to handle any exceptions
+                            alert(e); // pass exception object to error handler
+                        }
+                        function GetPeopleInfo(people) {
+            try {
+
+                GreatValueTag = "<span style='color: Green; font-weight:bold'>Great</span>&nbsp; &nbsp;";
+                RiskValueTag = "<span style='color:red; font-weight:bold' >Risk</span>&nbsp; &nbsp;";
+                FairValueTag = "<span style='color: deeppink ; font-weight:bold' >Fair</span>&nbsp; &nbsp;";
+
+                CheckTag = "<input type='checkbox' id='check5' class='save-cb-state' value='Python'>";
+                NewTag = "<span style='color: Purple; font-weight:bold'>New</span>&nbsp; &nbsp;";
+                ChangeTag = "<span style='color: Orange; font-weight:bold'>Change</span>&nbsp; &nbsp;";
+                WeBullTag = "<span style='color: Purple; font-weight:bold'>We Bull</span>&nbsp; &nbsp;";
+                TradingViewTag = "<span style='color: Brown; font-weight:bold'>Trading View</span>&nbsp; &nbsp;";
+                peopleinfo = "";
+                var percentcheck = 0;
+                debugger;
+                var dt = new Date(people.PubDate);
+                //alert(dt.getDate());
+                var checkToday = true;
+                var checkallhours = true;
+                var checkallPlatform = true;
+                var checkAllWithTweeted = true;
+                var checkallRecomended = true;
+                var checkAllWithNew = true;
+                var checkAllWithBio = true;
+                var checkAllWithOptions = true;
+                var checkAllWithLowFloat = true;
+
+                //alert(selectedToday);
+                if (selectedToday) {
+                    checkToday = (dt != null && (dt.getDate() === today.getDate() || dt.getDate() === (today.getDate())) &&
+                        dt.getMonth() === today.getMonth() &&
+                        dt.getFullYear() === today.getFullYear());
+                }
+                else if (selectedTodayYesterday) {
+                    checkToday = (dt != null && (dt.getDate() === today.getDate() || dt.getDate() === (today.getDate() - 1)) &&
+                        dt.getMonth() === today.getMonth() &&
+                        dt.getFullYear() === today.getFullYear());
+                }
+                //selectedTradinghours = 'PreMarket'
+
+                percentcheck = people.PercentChange;
+
+                if (selectedPlatform == 'Webull') {
+                    if (!people.isWeBullResult) {
+                        checkallPlatform = false;
+                    }
+                }
+                else if (selectedPlatform == 'TradingView') {
+                    if (!people.isTradingViewResult) {
+                        checkallPlatform = false;
+                    }
+                }
+
+
+                //if (selectedShortCut == 'Recent') {
+                //    percentcheck = people.PercentChangeSinceLast;
+                //}
+
+
+
+                if (selectedTimeHour) {
+                    if (!people.isLastOnehourNews) {
+                        checkallhours = false;
+                    }
+                }
+
+                //if (people.Symbol == 'SBEV') {
+                //    alert(selectedTradinghours);
+                //    //alert(people.PercentChangeAfterTradingHours);
+                //}
+                if (selectedRecomended) {
+                    if (percentcheck >= 11) {//|| percentcheck <= 3) {
+                        checkallRecomended = false;
+                    }
+                }
+
+                if (selectedBio) {
+                    if (people.isBioNews) {
+                        checkAllWithBio = false;
+                    }
+                }
+                if (selectedOptionsOnly) {
+                    if (!people.hasOptions) {
+                        checkAllWithOptions = false;
+                    }
+                }
+                else if(selectedNoOptions)
+                {
+                    if (people.hasOptions) {
+                        checkAllWithOptions = false;
+                    }
+
+                }
+
+                //if (selectedTweeted) {
+                //    if (!people.isTweeted) {
+                //        checkAllWithTweeted = false;
+                //    }
+                //}
+
+                if (selectedNew) {
+                    if (!people.isNewlyAdded) {
+                        checkAllWithNew = false;
+                    }
+                }
+                if (selectedLowFloat) {
+                    if (!people.isLowFloat) {
+                        checkAllWithLowFloat = false;
+                    }
+                }
+                if (!people.NewsLink.includes(".com")) {
+                    people.NewsLink = "https://stockhouse.com" + people.NewsLink
+                }
+
+                allnews = '';
+                try {
+                    if (people.AllNews && people.AllNews.length > 0) {
+                        for (j = 0; j < people.AllNews.length; j++) {
+                            allnews = allnews + "<br>"
+                            allnews = allnews + "&nbsp; &nbsp;" + "<a style='color: blue ; font-weight:bold' href=" + people.AllNews[j].NewsLink + " target=_blank >" + people.AllNews[j].Title + "</a> &nbsp; &nbsp; "
+                            if (j == 5) {
+                                break;
+                            }
+                        }
+                    }
+
+                    else {
+                        allnews = allnews + "<br>"
+                        allnews = allnews + "&nbsp; &nbsp;" + "<a style='color: blue ; font-weight:bold' href=" + people.NewsLink + " target=_blank >" + people.Title + "</a> &nbsp; &nbsp; "
+                    }
+                } catch (error) {
+                    debugger;
+                    console.error(error);
+                    // expected output: ReferenceError: nonExistentFunction is not defined
+                    // Note - error messages will vary depending on browser
+                }
+
+                alltweets = '';
+                try {
+                    if (people.AllTweets && people.AllTweets.length > 0) {
+                        alltweets = "<br>" + "<B>Tweets</B> :"
+                        for (j = 0; j < people.AllTweets.length; j++) {
+                            alltweets = alltweets + "<br>"
+                            alltweets = alltweets + "&nbsp; &nbsp;<B>" + people.AllTweets[j].Title + " </B>&nbsp; &nbsp; "
+                            if (j == 5) {
+                                break;
+                            }
+                        }
+                    }
+                } catch (error) {
+                    debugger;
+                    console.error(error);
+                    // expected output: ReferenceError: nonExistentFunction is not defined
+                    // Note - error messages will vary depending on browser
+                }
+
+                 var showNoNews = false;
+                        if (people.isNoNews || percentcheck > 5) {
+                            showNoNews = true;
+                        }
+                var iswarrant = false;
+                        if (people.Symbol.charAt(people.Symbol.length - 1) == 'W' || people.Symbol.charAt(people.Symbol.length - 1) == 'w') {
+                            iswarrant = true;
+                }
+
+                //var IsgoodVolume = true;
+                //if (people.AverageVolume <30000) {
+                ///    IsgoodVolume = false;
+                //}
+                //!people.isNoNews &&
+                if (!iswarrant && showNoNews && checkAllWithOptions && checkAllWithBio && checkallPlatform && checkallRecomended && checkAllWithNew && checkAllWithLowFloat && checkallhours && checkToday && (!people.isNoNews || percentcheck >= minPercent) && percentcheck <= maxPercent) {
+                    //peopleinfo = "<input type='checkbox' id='check5' class='save-cb-state' name=' " + people.Symbol + "'> "
+                    // peopleinfo = "&nbsp; &nbsp;" + "<a href=" + people.NewsLink + " target=_blank >" + people.Title + "</a> &nbsp; &nbsp; "
+
+                     if(people.RunForAustrlia) {
+
+                           var yahooChart ="https://finance.yahoo.com/quote/"+people.Symbol+".AX/chart?p="+people.Symbol+".AX";
+                           var tradingviewChart = "https://www.tradingview.com/chart/?symbol=ASX:"+people.Symbol;
+
+                            peopleinfo = peopleinfo + "<a style='font-weight:bold;color:red' href=" + yahooChart + " target=_blank  > Yahoo </a> &nbsp; &nbsp; "
+                            peopleinfo = peopleinfo + "<a style='font-weight:bold;color:red' href=" + tradingviewChart + " target=_blank  > TradingView </a> &nbsp; &nbsp; "
+                  
+                    }
+                    else
+                    {
+
+                        var yahooChart ="https://finance.yahoo.com/quote/"+people.Symbol+"/chart?p="+people.Symbol;
+                        var tradingviewChart = "https://www.tradingview.com/chart/?symbol="+people.Symbol;
+
+                        peopleinfo = peopleinfo + "<a style='font-weight:bold;color:red' href=" + yahooChart + " target=_blank  > Yahoo </a> &nbsp; &nbsp; "
+                        peopleinfo = peopleinfo + "<a style='font-weight:bold;color:red' href=" + tradingviewChart + " target=_blank  > TradingView </a> &nbsp; &nbsp; "
+                    }
+
+
+                    if (selectedTradinghours == 'Trading') {
+                        peopleinfo = peopleinfo + "<a style='font-weight:bold' href=" + people.WatchUri + " target=_blank  > In " + people.PercentChange + "%</a> &nbsp; &nbsp; "
+                    }
+                    else if (selectedTradinghours == 'After') {
+                        peopleinfo = peopleinfo + "<a style='font-weight:bold' href=" + people.WatchUri + " target=_blank  > After " + people.PercentChange + "%</a> &nbsp; &nbsp; "
+                    }
+                    else if (selectedTradinghours == 'PreMarket') {
+                        peopleinfo = peopleinfo + "<a style='font-weight:bold' href=" + people.WatchUri + " target=_blank  > Pre " + people.PercentChange + "%</a> &nbsp; &nbsp; "
+                    }
+
+                    peopleinfo = peopleinfo
+
+                        /* + "<a href=" + people.WatchUri + " target=_blank  >" + people.PercentChange + "%</a> &nbsp; &nbsp; "*/
+                        + "<a style='font-weight:bold' href=" + people.WatchUri + " target=_blank > Recent " + people.PercentChangeSinceLast + "%</a> &nbsp; &nbsp; "
+                        + "<a style='font-weight:bold' href=" + people.WatchUri + " target=_blank  >$" + people.MarketPrice + "</a> &nbsp; &nbsp; "
+                        + "<a style='font-weight:bold' href=" + people.WatchUri + " target=_blank  > Vol : " + convertToInternationalCurrencySystem(people.AverageVolume) + "</a> &nbsp; &nbsp; "
+
+                        + people.PubDate + "&nbsp; &nbsp; " /*+ "(" + get_time_diff(people.PubDate) + ")*/
+                        + "<a style='font-weight:bold' href=" + people.NewsSourceLink + " target=_blank  >" + people.CompanyName + "</a> &nbsp; &nbsp; "
+                        + "<a style='font-weight:bold' href=" + people.RobinNews + " target=_blank  >" + people.Symbol + "</a> &nbsp; &nbsp; "
+                        + "<a href=" + people.WatchUri + " target=_blank  > Shares :" + convertToInternationalCurrencySystem(people.OutStandingShares) + "</a> &nbsp; &nbsp; "
+                       
+                        + "<a href=" + people.WatchUri + " target=_blank  > Vol Change: " + convertToInternationalCurrencySystem(people.AverageVolumeChangeSinceLast) + "</a> &nbsp; &nbsp; "
+                        + "<a href=" + people.WatchUri + " target=_blank  > MCap : " + convertToInternationalCurrencySystem(people.MarketCap) + "</a> &nbsp; &nbsp; "
+                        + ""
+                    if (showNews) {
+                        peopleinfo = peopleinfo + allnews
+                    }
+                    if (showTweets) {
+                        peopleinfo = peopleinfo + alltweets
+                    }
+                    //+ "&nbsp; &nbsp;" + "<a style='color: blue ; font-weight:bold' href=" + people.NewsLink + " target=_blank >" + people.Title + "</a> &nbsp; &nbsp; "
+                    // + "<br>"
+
+
+                    /* + "<br />"*/
+
+
+                    peopleinfo = peopleinfo + "<br />"
+                     + "<a href=" + people.WatchUri + " target=_blank  > 50DayMin : $" + people.FiftyDayMin + "</a> &nbsp; &nbsp; "
+                        + "<a href=" + people.WatchUri + " target=_blank  > 50DayMax : $" + people.FiftyDayMax + "</a> &nbsp; &nbsp; "
+
+                        + "<a href=" + people.NewsSourceGoogleFinanceLink + " target=_blank  >GL</a> &nbsp; &nbsp; "
+                        + "<a href=" + people.TwitterLink + " target=_blank  >TWT</a> &nbsp; &nbsp; "
+                        + "<a href=" + people.StockTwitsLink + " target=_blank  >STKTWT</a> &nbsp; &nbsp; "
+
+                         
+                            + "<a href=" + people.NewsSourceBenzingLink + " target=_blank  >BZ</a> &nbsp; &nbsp; "
+                            + "<a href=" + people.NewsSourceBarronsLink + " target=_blank  >BR</a> &nbsp; &nbsp; "
+                            + "<a href=" + people.NewsSourceWeBullLink + " target=_blank  >BULL</a> &nbsp; &nbsp; "
+                            + "<a href=" + people.NewsSourceMarketBeatLink + " target=_blank  >MB</a> &nbsp; &nbsp; "
+                            + "<a href=" + people.NewsSourceStockHouseLink + " target=_blank  >STK</a> &nbsp; &nbsp; "
+                            + "<a href=" + people.NewsSourceMarketWatchLink + " target=_blank  >MW</a> &nbsp; &nbsp; "
+                            + "<a href=" + people.NewsSourceMarketChameleonLink + " target=_blank  >MC</a> &nbsp; &nbsp; "
+                              + "<a href=" + people.WatchUri + " target=_blank  >" + people.Industry + "</a> &nbsp; &nbsp; "
+                            + "<a href=" + people.WatchUri + " target=_blank  >" + people.isBioNews + "</a> &nbsp; &nbsp; "
+                            + "<a href=" + people.WatchUri + " target=_blank  >" + people.TradingHour + "</a> &nbsp; &nbsp; "
+                        
+
+
+                        + people.StockAdditionDate + "&nbsp; &nbsp; "
+
+                }
+        @*if (peopleinfo != '' && people.FiftyDayMin > 0 && people.MarketPrice > 0 && (Math.round(((people.MarketPrice - people.FiftyDayMin) / people.FiftyDayMin) * 100) < GreatValuePercent)) {
+            peopleinfo = GreatValueTag + peopleinfo;
+            }
+
+            if (peopleinfo != '' && people.FiftyDayMin > 0 && people.MarketPrice > 0 && (Math.round(((people.MarketPrice - people.FiftyDayMin) / people.FiftyDayMin) * 100) > FairValuePercent)
+            && (Math.round(((people.MarketPrice - people.FiftyDayMin) / people.FiftyDayMin) * 100) < 60)) {
+            peopleinfo = FairValueTag + peopleinfo;
+            }
+
+            if (peopleinfo != '' && people.FiftyDayMin > 0 && people.MarketPrice > 0 && (Math.round(((people.MarketPrice - people.FiftyDayMin) / people.FiftyDayMin) * 100) > RiskValuePercent)) {
+            peopleinfo = RiskValueTag + peopleinfo;
+            }*@
+
+                if (peopleinfo != '' && people.isNewlyAdded) {
+                    peopleinfo = NewTag + peopleinfo;
+                }
+                if (peopleinfo != '' && people.PercentChangeSinceLast > 0) {
+                    peopleinfo = ChangeTag + peopleinfo;
+                }
+                if (peopleinfo != '' && people.isWeBullResult) {
+                    peopleinfo = peopleinfo + WeBullTag;
+                }
+                if (peopleinfo != '' && people.isTradingViewResult) {
+                    peopleinfo = peopleinfo + TradingViewTag;
+                }
+                if (peopleinfo != '') {
+                    var favText = people.isFavorite ? 'Remove Favorite' : 'Add to Favorite';
+                    peopleinfo = peopleinfo +
+
+                        //"<a href='javascript:void(null)' onClick = 'handleFavorites(true, false);'> " + favText + "  </a> " +
+                        "<a href='javascript:void(null)' onClick = 'handleFavorites(" + people.isFavorite + ", \"" + people.Symbol + "\", \"" + people.NewsLink + "\", \"" + people.MarketPrice + "\")'> " + favText + "  </a> " +
+                        " &nbsp; &nbsp; <br><p>********</p>";
+
+
+                }
+            }
+            catch (error) {
+                alert(error);
+                // expected output: ReferenceError: nonExistentFunction is not defined
+                // Note - error messages will vary depending on browser
+            }
+            return peopleinfo;
+        }
+
+                        function News(tag) {
+            //debugger;
+            showTweets = true;
+            showNews = true;
+            peopleinfo = "";
+            people = "";
+            people = JSON.parse(data);
+            //debugger;
+            //readTextFile("https://getontrades.azurewebsites.net/File", function (text) {
+            //    debugger;
+            //    people = JSON.parse(text);
+            //});
+
+            selectedTradinghours = tradinghours();
+            /*alert(selectedTradinghours);*/
+            selectedPlatform = TradingPlatform();
+            selectedShortCut = GetShortCut();
+
+            var isRecent = (selectedShortCut == "Recent");
+
+
+            var options = document.getElementsByName("colors");
+            var optionsPercent = document.getElementsByName("percent");
+
+            var selectedPercent = '';
+            var selected = '';
+
+            if (optionsPercent) {
+                for (var i = 0; i < optionsPercent.length; i++) {
+                    if (optionsPercent[i].checked) {
+                        selectedPercent = optionsPercent[i].value;
+                    }
+                }
+            }
+
+            if (options) {
+                for (var i = 0; i < options.length; i++) {
+                    if (options[i].checked) {
+
+                        selected = options[i].value;
+                    }
+                }
+            }
+            //  var selectedTodayYesterday = false;
+
+            if (selected == 'today') {
+                selectedToday = true;
+                selectedTodayYesterday = false;
+            }
+            else if (selected == 'todayYesterday') {
+                selectedToday = false;
+                selectedTodayYesterday = true;
+            }
+            else {
+                selectedToday = false;
+                selectedTodayYesterday = false;
+            }
+
+            if (tag != "RecentChange" && !isRecent) {
+
+                //if (selectedTradinghours == 'Trading') {
+                //    FlipSortIn();
+                //}
+                //else if (selectedTradinghours == 'After') {
+                //    FlipSortAfter();
+                //}
+
+                //else {
+                //    FlipSortPre();
+                //}
+                FlipSort();
+            }
+            else if ((tag == "RecentChange") || isRecent) {
+                FlipSortRecent();
+            }
+            else {
+                FlipSortVolume();
+            }
+
+            //if (selectedShortCut == 'Recent') {
+            //    FlipSortRecent();
+            //}
+            //else if (selectedShortCut == 'Volume') {
+            //    FlipSortVolume();
+            //}
+
+            var optionsTime = document.getElementsByName("time");
+            if (optionsTime) {
+                for (var i = 0; i < optionsTime.length; i++) {
+                    if (optionsTime[i].checked) {
+                        if (optionsTime[i].value == 'hour') {
+                            selectedTimeHour = true;
+                        }
+                        else {
+                            selectedTimeHour = false;
+                        }
+                    }
+                }
+            }
+
+            var optionsTweet = document.getElementsByName("tweet");
+            if (optionsTweet) {
+                for (var i = 0; i < optionsTweet.length; i++) {
+                    if (optionsTweet[i].checked) {
+                        if (optionsTweet[i].value == 'tweet') {
+                            selectedTweeted = true;
+                        }
+                        else {
+                            selectedTweeted = false;
+                        }
+                    }
+                }
+            }
+
+            var optionsNew = document.getElementsByName("new");
+            if (optionsNew) {
+                for (var i = 0; i < optionsNew.length; i++) {
+                    if (optionsNew[i].checked) {
+                        if (optionsNew[i].value == 'new') {
+                            selectedNew = true;
+                        }
+                        else {
+                            selectedNew = false;
+                        }
+                    }
+                }
+            }
+
+            var optionsfloat = document.getElementsByName("float");
+            if (optionsfloat) {
+                for (var i = 0; i < optionsfloat.length; i++) {
+                    if (optionsfloat[i].checked) {
+                        if (optionsfloat[i].value == 'float') {
+                            selectedLowFloat = true;
+                        }
+                        else {
+                            selectedLowFloat = false;
+                        }
+                    }
+                }
+            }
+
+            var optionsRecomended = document.getElementsByName("recom");
+                            if (optionsRecomended) {
+                                for (var i = 0; i < optionsRecomended.length; i++) {
+                                    if (optionsRecomended[i].checked) {
+                                        if (optionsRecomended[i].value == 'Recomended') {
+                                            selectedRecomended = true;
+                                        }
+                                        else {
+                                            selectedRecomended = false;
+                                        }
+                                    }
+                                }
+                            }
+
+
+                            var optionsStockOptions = document.getElementsByName("options");
+                            if (optionsStockOptions) {
+                                for (var i = 0; i < optionsStockOptions.length; i++) {
+                                    if (optionsStockOptions[i].checked) {
+                                        if (optionsStockOptions[i].value == 'OptionsOnly') {
+                                            selectedOptionsOnly = true;
+                                            selectedNoOptions = false;
+                                        }
+                                        else if (optionsStockOptions[i].value == 'NoOptions')
+                                        {
+                                            selectedNoOptions = true;
+                                            selectedOptionsOnly = false;
+                                        }
+                                        else {
+                                            selectedOptionsOnly = false;
+                                            selectedNoOptions = false;
+                                        }
+                                    }
+                                }
+                            }
+
+            var optionsBio = document.getElementsByName("Bio");
+            if (optionsBio) {
+                for (var i = 0; i < optionsBio.length; i++) {
+                    if (optionsBio[i].checked) {
+                        if (optionsBio[i].value == 'NoBio') {
+                            selectedBio = true;
+                        }
+                        else {
+                            selectedBio = false;
+                        }
+                    }
+                }
+            }
+
+
+
+            var optionsPrice = document.getElementsByName("price");
+            if (optionsPrice) {
+                for (var i = 0; i < optionsPrice.length; i++) {
+                    if (optionsPrice[i].checked) {
+                        selectedPrice = optionsPrice[i].value;
+                    }
+                }
+            }
+
+            if (tag == "SeekingAlpha") {
+                // FlipSort();
+                for (i = 0; i < people.length; i++) {
+                    if (people[i].NewsLink.includes("seekingalpha")) {
+                        peopleinfo += GetPeopleInfo(people[i]);
+                    }
+                }
+                document.getElementById("demo").innerHTML = peopleinfo;
+            }
+            else if (tag == "Imp") {
+                //alert(tag);
+                PopulateImp();
+            }
+            else if (tag == "All") {
+                //alert(tag);
+                PopulatePeople();
+            }
+            //if (tag == "Pre") {
+            //    //alert(tag);
+            //    PopulatePre();
+            //}
+            //if (tag == "After") {
+            //    //alert(tag);
+            //    PopulateAfter();
+            //}
+            //if (tag == "In") {
+            //    //alert(tag);
+            //    PopulateIn();
+            //}
+            else if (tag == "Upward") {
+                //alert(tag);
+                PopulateUpward();
+            }
+            else if (tag == "SPACNews") {
+                //alert(tag);
+                PopulateSPACNews();
+            }
+            else if (tag == "IPONews") {
+                //alert(tag);
+                PopulateIPONews();
+            }
+            else if (tag == "RecentChange") {
+                PopulateRecentChange();
+            }
+            else if (tag == "GreatValue") {
+                PopulateGreatValue();
+            }
+            else if (tag == "FilterNews") {
+                PopulateFilterNews();
+            }
+            else if (tag == "FilterGreatValueNews") {
+                FilterGreatValueNews();
+            }
+            else if (tag == "FilterFairValueNews") {
+                FilterFairValueNews();
+            }
+            else if (tag == "RecentTop3Ever") {
+                RecentTop3Ever();
+            }
+            else if (tag == "VolumeChange") {
+                //alert(tag);
+                PopulateVolumeChange();
+            }
+            else if (tag == "FivePercentFilter") {
+                //alert(tag);
+                PopulateFivePercent();
+            }
+            else if (tag == "WSB") {
+                //alert(tag);
+                PopulateWSB();
+            }
+            else if (tag == "HTI") {
+                //alert(tag);
+                PopulateHTI();
+            }
+            else if (tag == "LOH") {
+                //alert(tag);
+                PopulateLOH();
+            }
+            else if (tag == "P01") {
+                //alert(tag);
+                PopulateP01();
+            }
+            else if (tag == "P03") {
+                //alert(tag);
+                PopulateP03();
+            }
+            else if (tag == "P05") {
+                //alert(tag);
+                PopulateP05();
+            }
+            else if (tag == "P10") {
+                //alert(tag);
+                PopulateP10();
+            }
+            else if (tag == "News") {
+                showTweets = false;
+                showNews = true;
+                PopulatePeople();
+            }
+            else if (tag == "Tweets") {
+                showTweets = true;
+                showNews = false;
+                PopulatePeople();
+            }
+            else {
+
+                PopulatePeople();
+            }
+            // alert(peopleinfo);
+            document.getElementById("demo").innerHTML = peopleinfo;
+        }
+
+                        function readTextFile(file, callback) {
+                            var rawFile = new XMLHttpRequest();
+                            rawFile.overrideMimeType("application/json");
+                            rawFile.open("GET", file, true);
+                            rawFile.onreadystatechange = function () {
+                                if (rawFile.readyState === 4 && rawFile.status == "200") {
+                                    callback(rawFile.responseText);
+                                }
+                            }
+                            rawFile.send(null);
+                        }
+
+                        function Populate() {
+                            //peopleinfo = "";
+                            //people = "";
+                            peopleinfo = PopulatePeople();
+
+                        }
+                        function PopulatePeople() {
+
+                            for (i = 0; i < people.length; i++) {
+                                if (people[i].NewsLink != null) {
+                                    peopleinfo += GetPeopleInfo(people[i]);
+                                }
+                            }
+                            return peopleinfo;
+                        }
+
+                        function tradinghours() {
+                            var now = new Date();
+                            var hour = now.getHours();
+                            var minutes = now.getMinutes();
+                            var optionsTrade = document.getElementsByName("tradinghours");
+
+                            if (optionsTrade) {
+                                //if (!optionsTrade[3].checked && !optionsTrade[4].checked) {
+                                for (var i = 0; i < optionsTrade.length; i++) {
+                                    if (optionsTrade[i].value == "PreMarket" && hour < 6) {
+                                        optionsTrade[i].checked = true;
+                                        selectedTradinghours = "PreMarket";
+                                    }
+                                    else if (optionsTrade[i].value == "Trading" && hour >= 6 && hour <= 13) {
+                                        optionsTrade[i].checked = true;
+                                        selectedTradinghours = "Trading";
+                                    }
+                                    else if (optionsTrade[i].value == "After" && (hour >= 13)) {
+                                        optionsTrade[i].checked = true;
+                                        selectedTradinghours = "After";
+                                    }
+
+                                }
+
+                                //}
+                                //else if (optionsTrade[3].checked) {
+                                //    selectedTradinghours = "Recent";
+                                //}
+                                //else if (optionsTrade[4].checked) {
+                                //    selectedTradinghours = "Volume";
+                                //}
+
+                                //selectedTradinghours = optionsTrade.selectedOptions[0].value;
+                                //alert(selectedTradinghours);
+                            }
+                            return selectedTradinghours;
+                        }
+
+                        function GetShortCut() {
+                            var optionsTrade = document.getElementsByName("shortcut");
+                            if (optionsTrade) {
+                                for (var i = 0; i < optionsTrade.length; i++) {
+                                    if (optionsTrade[i].checked) {
+                                        selectedShortCut = optionsTrade[i].value;
+                                    }
+                                }
+                            }
+                            return selectedShortCut;
+                        }
+
+                        function TradingPlatform() {
+
+                            //  debugger;
+                            var options = document.getElementsByName("platform");
+                            if (options) {
+
+                                for (var i = 0; i < options.length; i++) {
+                                    if (options[i].checked) {
+                                        selectedPlatform = options[i].value;
+                                    }
+
+                                }
+                                //alert(selectedPlatform);
+                                return selectedPlatform;
+                            }
+                        }
+
+                        ////////////////////////////////
+
+                        //////////////////////////
+                        function PopulateImp() {
+                            peopleinfo = "";
+                            //FlipSort();
+                            for (i = 0; i < people.length; i++) {
+                                if (people[i].HotKeyword != null) {
+                                    peopleinfo += GetPeopleInfo(people[i]);
+                                }
+                            }
+                        }
+                        function PopulateHTI() {
+                            peopleinfo = "";
+                            //FlipSort();
+                            for (i = 0; i < people.length; i++) {
+                                if (people[i].HotIndustry != null) {
+                                    peopleinfo += GetPeopleInfo(people[i]);
+                                }
+                            }
+                        }
+
+                        function PopulatePre() {
+
+                            var today = new Date();
+                            //alert(today);
+                            FlipSortPre();
+                            for (i = 0; i < people.length; i++) {
+
+                                var dt = new Date(people[i].PubDate);
+                                peopleinfo += GetPeopleInfo(people[i]);
+                                //}
+                            }
+                        }
+                function handleFavorites(isFavorite, stockSymbol, newsLink, stockPrice) {
+                    if (isFavorite) {
+                        var favorite = new Object();
+                        favorite.symbol = stockSymbol;
+                        fetch('/RemoveFavorite', {
+                            method: "POST",
+                            body: JSON.stringify(favorite),
+                            headers: {
+                                "Content-type": "application/json; charset=UTF-8"
+                            }
+                        })
+                    } else {
+                        var favorite = new Object();
+                        favorite.symbol = stockSymbol;
+                        favorite.newLink = newsLink;
+                        favorite.marketprice = stockPrice;
+                        //alert(newsLink);
+
+                        fetch('/SaveFavorite', {
+                            method: "POST",
+                            body: JSON.stringify(favorite),
+                            headers: {
+                                "Content-type": "application/json; charset=UTF-8"
+                            }
+                        })
+                    }
+
+                        }
+                        function Checktoday(dt) {
+                            var options = document.getElementsByName("colors");
+                            var selected = '';
+                            if (options) {
+                                for (var i = 0; i < options.length; i++) {
+                                    if (options[i].checked) {
+
+                                        selected = options[i].value;
+                                    }
+                                }
+                            }
+                            if (selected == 'today') {
+                                var checkToday = (dt != null && dt.getDate() === today.getDate() &&
+                                    dt.getMonth() === today.getMonth() &&
+                                    dt.getFullYear() === today.getFullYear());
+                                alert(checkToday);
+                                alert(dt);
+                                return checkToday;
+                            }
+                            return true;
+
+                        }
+                        function PopulateAfter() {
+
+                            var today = new Date();
+                            //alert(today);
+                            FlipSortAfter();
+                            for (i = 0; i < people.length; i++) {
+
+                                var dt = new Date(people[i].PubDate);
+                                //alert(dt.getDate());
+                                //var checkToday = (dt != null && dt.getDate() === today.getDate() &&
+                                //    dt.getMonth() === today.getMonth() &&
+                                //    dt.getFullYear() === today.getFullYear());
+
+                                //if (checkToday) {
+                                peopleinfo += GetPeopleInfo(people[i]);
+                                //}
+                            }
+                        }
+                        function PopulateIn() {
+
+                            var today = new Date();
+                            //alert(today);
+                            FlipSortIn();
+                            for (i = 0; i < people.length; i++) {
+                                //var dt = new Date(people[i].PubDate);
+                                ////alert(dt.getDate());
+                                //var checkToday = (dt != null && dt.getDate() === today.getDate() &&
+                                //    dt.getMonth() === today.getMonth() &&
+                                //    dt.getFullYear() === today.getFullYear());
+
+                                //if (checkToday) {
+                                peopleinfo += GetPeopleInfo(people[i]);
+                                //}
+                            }
+                        }
+                        function Today() {
+
+                            PopulateToday();
+                            document.getElementById("demo").innerHTML = peopleinfo;
+                        }
+                        function PopulateUpward() {
+
+                            //FlipSort();
+                            for (i = 0; i < people.length; i++) {
+                                if (people[i].PercentChange != null && parseFloat(people[i].PercentChange) > 0) {
+                                    peopleinfo += GetPeopleInfo(people[i]);
+                                }
+                            }
+                        }
+                        function PopulateSPACNews() {
+                            // FlipSort();
+                            var str = 'Shell companies';
+                            for (i = 0; i < people.length; i++) {
+                                if (people[i].Industry != null && people[i].Industry.toUpperCase() == str.toUpperCase()) {
+                                    peopleinfo += GetPeopleInfo(people[i]);
+
+                                }
+                            }
+                        }
+
+                        function PopulateWSB() {
+                            // FlipSort();
+                            for (i = 0; i < people.length; i++) {
+                                if (people[i].isWSB) {
+                                    peopleinfo += GetPeopleInfo(people[i]);
+
+                                }
+                            }
+                        }
+                        function PopulateLOH() {
+                            // FlipSort();
+                            for (i = 0; i < people.length; i++) {
+                                if (people[i].isLastOnehourNews) {
+                                    peopleinfo += GetPeopleInfo(people[i]);
+                                }
+                            }
+                        }
+                        function PopulateP01() {
+                            // FlipSort();
+                            for (i = 0; i < people.length; i++) {
+                                if (people[i].MarketPrice > 0 && people[i].MarketPrice <= 1) {
+                                    peopleinfo += GetPeopleInfo(people[i]);
+                                }
+                            }
+                        }
+                        function PopulateP03() {
+                            // FlipSort();
+                            for (i = 0; i < people.length; i++) {
+                                if (people[i].MarketPrice > 1 && people[i].MarketPrice <= 3) {
+                                    peopleinfo += GetPeopleInfo(people[i]);
+                                }
+                            }
+                        }
+                        function PopulateP05() {
+                            // FlipSort();
+                            for (i = 0; i < people.length; i++) {
+                                if (people[i].MarketPrice > 3 && people[i].MarketPrice <= 5) {
+                                    peopleinfo += GetPeopleInfo(people[i]);
+                                }
+                            }
+                        }
+                        function PopulateP10() {
+                            // FlipSort();
+                            for (i = 0; i < people.length; i++) {
+                                if (people[i].MarketPrice > 5 && people[i].MarketPrice <= 10) {
+                                    peopleinfo += GetPeopleInfo(people[i]);
+                                }
+                            }
+                        }
+                        function PopulateIPONews() {
+                            // FlipSort();
+                            for (i = 0; i < people.length; i++) {
+
+                                if (people[i].isIPO != null && people[i].isIPO) {
+                                    //alert(people[i].isIPO);
+                                    peopleinfo += GetPeopleInfo(people[i]);
+                                }
+                            }
+                        }
+                        function PopulateRecentChange() {
+
+                            // check Recent trading Hour
+                            var optionsTrade = document.getElementsByName("shortcut");
+                            optionsTrade[1].checked = true;
+                            // check platofrm all trading Hour
+                            var options = document.getElementsByName("recom");
+                            options[1].checked = true;
+                            selectedTradinghours = tradinghours();
+
+                            for (i = 0; i < people.length; i++) {
+                                if (people[i].PercentChangeSinceLast != null) {
+                                    people[i].PercentChangeSinceLast = parseFloat(people[i].PercentChangeSinceLast);
+                                    if (people[i].PercentChangeSinceLast > 0 && Math.sign(people[i].PercentChangeSinceLast)) {
+                                        peopleinfo += GetPeopleInfo(people[i]);
+                                        //var replace = "<a href=" + people[i].WatchUri + " target=_blank  >" + people[i].PercentChangeSinceLast + "%</a> &nbsp; &nbsp; <br><p>********</p> ";
+                                        //peopleinfo = replaceLast("<br><p>********</p>", replace, peopleinfo);
+                                    }
+                                }
+                            }
+                        }
+
+                        function PopulateVolumeChange() {
+
+                            var optionsTrade = document.getElementsByName("shortcut");
+                            optionsTrade[2].checked = true;
+                            var options = document.getElementsByName("recom");
+                            options[1].checked = true;
+                            selectedTradinghours = tradinghours();
+
+                            for (i = 0; i < people.length; i++) {
+                                if (people[i].AverageVolumeChangeSinceLast != null) {
+                                    people[i].AverageVolumeChangeSinceLast = parseFloat(people[i].AverageVolumeChangeSinceLast);
+                                    if (people[i].AverageVolumeChangeSinceLast > 0 && Math.sign(people[i].AverageVolumeChangeSinceLast)) {
+                                        peopleinfo += GetPeopleInfo(people[i]);
+                                        //var replace = "<a href=" + people[i].WatchUri + " target=_blank  >" + people[i].PercentChangeSinceLast + "%</a> &nbsp; &nbsp; <br><p>********</p> ";
+                                        //peopleinfo = replaceLast("<br><p>********</p>", replace, peopleinfo);
+                                    }
+                                }
+                            }
+                        }
+
+                        function PopulateGreatValue() {
+
+                            for (i = 0; i < people.length; i++) {
+                                if (people[i].FiftyDayMin != null && people[i].MarketPrice != null && people[i].FiftyDayMin > 0 && people[i].MarketPrice > 0) {
+                                    if (Math.round(((people[i].MarketPrice - people[i].FiftyDayMin) / people[i].FiftyDayMin) * 100) < 25) {
+                                        peopleinfo += GetPeopleInfo(people[i]);
+                                    }
+                                }
+                            }
+                        }
+
+                        function PopulateFilterNews() {
+
+                            for (i = 0; i < people.length; i++) {
+                                if (people[i].hasRelevantNews) {
+
+                                    peopleinfo += GetPeopleInfo(people[i]);
+                                }
+                            }
+                        }
+                        function FilterGreatValueNews() {
+
+                            for (i = 0; i < people.length; i++) {
+                                if (people[i].hasRelevantNews && people[i].Grade == 1) {
+
+                                    peopleinfo += GetPeopleInfo(people[i]);
+                                }
+                            }
+                        }
+
+                        function FilterFairValueNews() {
+                            for (i = 0; i < people.length; i++) {
+                                if (people[i].hasRelevantNews && people[i].Grade == 2) {
+
+                                    peopleinfo += GetPeopleInfo(people[i]);
+                                }
+                            }
+
+                        }
+                        function RecentTop3Ever() {
+                            for (i = 0; i < people.length; i++) {
+                                if (people[i].isTop3RecentChange) {
+
+                                    peopleinfo += GetPeopleInfo(people[i]);
+                                }
+                            }
+
+                        }
+
+
+                        function replaceLast(find, replace, string) {
+                            var lastIndex = string.lastIndexOf(find);
+
+                            if (lastIndex === -1) {
+                                return string;
+                            }
+
+                            var beginString = string.substring(0, lastIndex);
+                            var endString = string.substring(lastIndex + find.length);
+
+                            return beginString + replace + endString;
+                        }
+
+                        function ImpFilter() {
+
+                            PopulateImp();
+                            document.getElementById("demo").innerHTML = peopleinfo;
+                        }
+                        function FivePercentFilter() {
+
+                            PopulateFivePercent();
+                            document.getElementById("demo").innerHTML = peopleinfo;
+                        }
+
+
+
+                        function PopulateFivePercent() {
+                            //peopleinfo = "";
+                            // people = JSON.parse(data);
+                            //FlipSort();
+                            for (i = 0; i < people.length; i++) {
+                                if (people[i].PercentChange >= 5) {
+                                    peopleinfo += GetPeopleInfo(people[i]);
+                                }
+                            }
+                        }
+
+                        function FlipSort() {
+                            if (datepercentFlip) {
+                                people.sort(GetReverseSortOrderDate("PubDate"));
+                                datepercentFlip = false;
+                            }
+                            else {
+
+                                people.sort(GetReverseSortOrderFloat("PercentChange"));
+                                datepercentFlip = true;
+                            }
+                        }
+
+                        function FlipSortAfter() {
+                            if (datepercentFlip) {
+
+                                people.sort(GetReverseSortOrderDate("PubDate"));
+                                datepercentFlip = false;
+                            }
+                            else {
+
+                                people.sort(GetReverseSortOrderFloat("PercentChangeAfterTradingHours"));
+                                datepercentFlip = true;
+                            }
+                        }
+
+                        function FlipSortPre() {
+                            if (datepercentFlip) {
+
+                                people.sort(GetReverseSortOrderDate("PubDate"));
+                                datepercentFlip = false;
+                            }
+                            else {
+
+                                people.sort(GetReverseSortOrderFloat("PercentChangePreTradingHours"));
+                                datepercentFlip = true;
+                            }
+                        }
+
+                        function FlipSort() {
+                            if (datepercentFlip) {
+                                people.sort(GetReverseSortOrderDate("PubDate"));
+                                datepercentFlip = false;
+                            }
+                            else {
+
+                                people.sort(GetReverseSortOrderFloat("PercentChange"));
+                                datepercentFlip = true;
+                            }
+                        }
+
+                        function FlipSortIn() {
+                            if (datepercentFlip) {
+                                people.sort(GetReverseSortOrderDate("PubDate"));
+                                datepercentFlip = false;
+                            }
+                            else {
+
+                                people.sort(GetReverseSortOrderFloat("PercentChangeInTradingHours"));
+                                datepercentFlip = true;
+                            }
+                        }
+
+
+                        function FlipSortRecent() {
+                            if (datepercentFlip) {
+                                people.sort(GetDecendingSortOrderDate("PubDate"));
+                                datepercentFlip = false;
+                            }
+                            else {
+
+                                people.sort(GetDecendingSortOrderFloat("PercentChangeSinceLast"));
+                                datepercentFlip = true;
+                            }
+                        }
+
+                        function FlipSortVolume() {
+                            if (datepercentFlip) {
+                                people.sort(GetReverseSortOrderDate("PubDate"));
+                                datepercentFlip = false;
+                            }
+                            else {
+
+                                people.sort(GetReverseSortOrderFloat("AverageVolumeChangeSinceLast"));
+                                datepercentFlip = true;
+                            }
+                        }
+
+
+                        function get_time_diff(datetime) {
+                            var datetime = typeof datetime !== 'undefined' ? datetime : "2014-01-01 01:02:03.123456";
+                            var dt = "";
+                            var datetime = new Date(datetime).getTime();
+                            var now = new Date().getTime();
+
+                            if (isNaN(datetime)) {
+                                return "";
+                            }
+
+                            //alert(datetime + " " + now);
+
+                            if (datetime < now) {
+                                var milisec_diff = now - datetime;
+                            } else {
+                                var milisec_diff = datetime - now;
+                            }
+
+                            var days = Math.floor(milisec_diff / 1000 / 60 / (60 * 24));
+
+                            var date_diff = new Date(milisec_diff);
+
+                            if (days > 0) {
+                                dt += days + " Days ";
+                            }
+
+                            if (date_diff.getHours() > 0) {
+                                dt += date_diff.getHours() + " Hours ";
+                            }
+                            if (date_diff.getMinutes() > 0) {
+                                dt += date_diff.getMinutes() + " Minutes ";
+                            }
+
+                            return dt;
+                            //return days + " Days " + date_diff.getHours() + " Hours " + date_diff.getMinutes() + " Minutes " + date_diff.getSeconds() + " Seconds";
+                        }
+
+
+                        //Comparer Function
+                        //Comparer Function
+                        function Getcolor(value) {
+                            if (value.indexOf('-') == 0)
+                                return "blue";
+                            else
+                                return "red";
+                        }
+                        function GetSortOrder(prop) {
+                            return function (a, b) {
+                                if (a[prop] > b[prop]) {
+                                    return 1;
+                                } else if (a[prop] < b[prop]) {
+                                    return -1;
+                                }
+                                return 0;
+                            }
+                        }
+
+                        function GetReverseSortOrder(prop) {
+                            return function (a, b) {
+                                if (a[prop] < b[prop]) {
+                                    return 1;
+                                } else if (a[prop] > b[prop]) {
+                                    return -1;
+                                }
+                                return 0;
+                            }
+                        }
+
+
+                        function GetSortOrderDate(prop) {
+                            return function (a, b) {
+                                if (Date.parse(a[prop]) > Date.parse(b[prop])) {
+                                    return 1;
+                                } else if (Date.parse(a[prop]) < Date.parse(b[prop])) {
+                                    return -1;
+                                }
+                                return 0;
+                            }
+                        }
+
+
+                        function GetReverseSortOrderDate(prop) {
+                            return function (a, b) {
+                                if (Date.parse(a[prop]) < Date.parse(b[prop])) {
+                                    return 1;
+                                } else if (Date.parse(a[prop]) > Date.parse(b[prop])) {
+                                    return -1;
+                                }
+                                return 0;
+                            }
+                        }
+                        function GetReverseSortOrderFloat(prop) {
+                            return function (a, b) {
+                                if (parseFloat(a[prop]) > parseFloat(b[prop])) {
+                                    return 1;
+                                } else if (parseFloat(a[prop]) < parseFloat(b[prop])) {
+                                    return -1;
+                                }
+                                return 0;
+                            }
+                        }
+
+                        function GetDecendingSortOrderDate(prop) {
+                            return function (a, b) {
+                                if (Date.parse(a[prop]) < Date.parse(b[prop])) {
+                                    return 1;
+                                } else if (Date.parse(a[prop]) > Date.parse(b[prop])) {
+                                    return -1;
+                                }
+                                return 0;
+                            }
+                        }
+                        function GetDecendingSortOrderFloat(prop) {
+                            return function (a, b) {
+                                if (parseFloat(a[prop]) < parseFloat(b[prop])) {
+                                    return 1;
+                                } else if (parseFloat(a[prop]) > parseFloat(b[prop])) {
+                                    return -1;
+                                }
+                                return 0;
+                            }
+                        }
+
+
+
+                        //IMplement Bubble sort later on Saturday
+
+                        function bubbleSort(a, par, isdesending) {
+                            var swapped;
+                            var isdate;
+                            var condition = true;
+                            if (par = 'PubDate') {
+                                isdate = true;
+                                //alert(isdesending);
+                            }
+                            do {
+                                swapped = false;
+                                for (var i = 0; i < a.length - 1; i++) {
+                                    if (isdate) {
+                                        if (isdesending) {
+                                            condition = (Date(a[i][par]) < Date(a[i + 1][par]));
+                                        }
+                                        else {
+                                            condition = (Date(a[i][par]) < Date(a[i + 1][par]));
+                                        }
+                                    }
+                                    if (condition) {
+                                        var temp = a[i];
+                                        //alert(a[i]);
+                                        a[i] = a[i + 1];
+                                        a[i + 1] = temp;
+                                        swapped = true;
+                                    }
+                                }
+                            } while (swapped);
+                        }
+
+                        function bubbleSortPercent(a, par, isreverse) {
+                            var swapped;
+                            do {
+                                swapped = false;
+                                for (var i = 0; i < a.length - 1; i++) {
+                                    if (isreverse) {
+                                        condition = (parseFloat(a[i][par]).toFixed(2) > parseFloat(a[i + 1][par]).toFixed(2));
+                                    }
+                                    else {
+                                        condition = (parseFloat(a[i][par]).toFixed(2) < parseFloat(a[i + 1][par]).toFixed(2));
+                                    }
+
+                                    if (condition) {
+                                        var temp = a[i];
+                                        //alert(temp);
+                                        //alert(a[i]);
+                                        a[i] = a[i + 1];
+                                        a[i + 1] = temp;
+                                        swapped = true;
+                                    }
+                                }
+                            } while (swapped);
+                        }
+
+                        function convertToInternationalCurrencySystem(labelValue) {
+
+                            // Nine Zeroes for Billions
+                            return Math.abs(Number(labelValue)) >= 1.0e+9
+
+                                ? (Math.abs(Number(labelValue)) / 1.0e+9).toFixed(2) + "B"
+                                // Six Zeroes for Millions
+                                : Math.abs(Number(labelValue)) >= 1.0e+6
+
+                                    ? (Math.abs(Number(labelValue)) / 1.0e+6).toFixed(2) + "M"
+                                    // Three Zeroes for Thousands
+                                    : Math.abs(Number(labelValue)) >= 1.0e+3
+
+                                        ? (Math.abs(Number(labelValue)) / 1.0e+3).toFixed(2) + "K"
+
+                                        : Math.abs(Number(labelValue));
+
+                        }
+
+
+
+    </script>
+</body>
+
+
+
+<!--function PopulateNoNews() {
+           peopleinfo = "";
+           people = "";
+           people = JSON.parse(data);
+           FlipSort();
+           for (i = 0; i < people.length; i++) {
+               if (people[i].NewsLink == null) {
+                   peopleinfo += GetPeopleInfo(people[i]);
+               }
+           }
+       }
+
+       function PopulateChange() {
+           peopleinfo = "";
+           people = "";
+           people = JSON.parse(data);
+           for (i = 0; i < people.length; i++) {
+               if (people[i].PercentChange == null) {
+                   people[i].PercentChange = "0";
+               }
+           }
+
+           for (i = 0; i < people.length; i++) {
+               if (people[i].PercentChange != null) {
+                   people[i].PercentChange = parseFloat(people[i].PercentChange);
+                   //alert(people[i].PercentChange);
+               }
+           }
+           peopleinfo = PopulatePeople();
+       }
+      function Pre() {
+
+           PopulatePre();
+           document.getElementById("demo").innerHTML = peopleinfo;
+       }
+
+       function TodayPre() {
+
+           PopulateTodayPre();
+           document.getElementById("demo").innerHTML = peopleinfo;
+       }
+
+       }-->
